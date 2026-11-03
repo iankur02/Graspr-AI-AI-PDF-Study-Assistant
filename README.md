@@ -1,40 +1,65 @@
-# Graspr AI — AI PDF Study Assistant (React + Vite + Tailwind CSS Project)
-
-This repository contains the complete **React 18 + Vite + Tailwind CSS** project converted from the HTML prototype, paired with the **Node.js + Express + MongoDB** backend.
-
-## Project Structure
-```
-graspr-ai-react-project/
+AI PDF Study Assistant (Graspr AI)An Intelligent, Document-Grounded Learning Platform for Personalized Academic RevisionAI PDF Study Assistant (Graspr AI) is a full-stack MERN + Retrieval-Augmented Generation (RAG) web application designed to help university students, competitive exam aspirants, and researchers transform static academic PDFs into interactive study workspaces. Upload textbooks, lecture notes, or research papers to automatically extract structured chapters, generate concise revision summaries, practice difficulty-graded multiple-choice quizzes, flip 3D flashcards, listen to conversational AI audio overviews, and chat directly with your notes using verified page citations.Why AI PDF Study Assistant?Students routinely spend hours sifting through dense textbooks and lecture PDFs to extract definitions, build revision notes, and test their understanding before exams. Generic AI chatbots often hallucinate facts outside the syllabus or lose track of page context.Graspr AI solves this by grounding every summary, multiple-choice question, flashcard, and chat answer strictly inside the user's uploaded PDF documents—attaching clickable [Page X] citations and abstaining when a query falls outside the uploaded material.Core Features1. Three-Pane Interactive Document WorkspaceCourse Folder & Document Library (Left Pane): Organize uploaded PDFs by course code (e.g., CHAM 1802, CS 301, CS 405), filter documents instantly, and switch between study sessions.Multi-Source Academic Viewer (Center Pane): Read extracted textbook chapters with zoom controls, page indicators, and source tabs for PDF Document, YouTube Lecture Transcript, and Audio Lecture Notes.Floating AI Selection Context Menu: Highlight any sentence or formula inside the PDF viewer to trigger 7 instant actions:Explain: Breaks down complex passages or equations in plain language.Summarize: Condenses the highlighted excerpt into bulleted key points.Flashcard: Converts the selection into an active-recall front/back flashcard.Chat: Quotes the selected passage directly into the RAG chat input.Add to Notes: Saves the highlight with its page number and tag (Formula, Concept, Exam Tip) to your study notepad.Create Hyperlink: Copies a formatted academic citation anchor ([Document — Chapter, Page X]).What The Teacher Says: Surfaces high-yield exam traps and professor insights for that topic.2. Chapter-Wise AI SummariesAutomatically detects chapter headings and section boundaries (with page-range fallback for unstructured PDFs).Generates structured revision material per chapter:Executive Chapter OverviewExtracted Key ConceptsImportant Definitions GlossaryHigh-Yield Revision Bullet PointsWhat The Teacher Says (Exam Alert Box)Supports one-click regeneration and saving to permanent study history.3. AI MCQ Generator & Interactive Quiz EngineGenerates 4-option multiple-choice questions strictly grounded in the selected chapter.Supports difficulty filtering (Easy, Medium, Hard, and All Difficulties).Provides instant option validation, verified explanations with exact page references, live score calculation, and persistent attempt logging.4. Grounded RAG Chat with Uploaded NotesSplits extracted PDF text into overlapping, page-indexed chunks for top-$k$ retrieval.Answers natural-language questions using only retrieved document passages and attaches clickable [Page X] citation badges that jump the PDF viewer to the exact source page.Enforces a Strict Grounding Guardrail that alerts the student when a topic is not present in the uploaded PDF rather than hallucinating unsupported answers.5. Active Recall Flashcards, Smart Notes & AI Audio Podcast3D Flip Flashcards: Practice key definitions and formulas with "Got It" and "Need Review" spaced-repetition controls.Smart Study Notepad: Tag notes as Concept, Formula, or Exam Tip and export your complete revision sheet as a Markdown (.md) file.AI Audio Podcast (Text-to-Speech): Listen to a two-person conversational breakdown (Host Alex & Prof. Williams) of the active chapter using Web Speech synthesis with adjustable playback speeds (1.0x, 1.25x, 1.5x).6. Progress Dashboard, Weak-Topic Diagnostic & Study HistoryKPI & Mastery Analytics: Track total uploaded PDFs, saved chapter summaries, average quiz accuracy, and score progression charts (Recharts).Weak-Topic Identification: Automatically flags low-accuracy chapters from past quiz attempts and links directly to targeted revision.Exam Countdown & Study Planner: Calculates remaining study days until your target examination date.System Workflow ArchitectureStudent Uploads PDF (POST /api/documents/upload) — Drag-and-drop interface validates .pdf MIME type and 25 MB size limit.Text Extraction & Page Indexing — pdf-parse (backend) and pdf.js (client) extract raw text while preserving page numbers.Chapter Segmentation & Chunking — Splits lengthy documents into logical chapters and overlapping 600-character RAG chunks.MongoDB Persistence — Stores document metadata, chapters, and chunks in MongoDB while keeping raw binaries in file/object storage.AI & RAG Processing — Hosted LLM API generates structured JSON chapter summaries, 4-option MCQs, and citation-backed RAG chat responses.Student Workspace & Progress Tracking — Stores quiz attempts, saved summaries, and chat logs to power the personalized learning dashboard.Technology StackLayerTechnologyPurposeFrontend FrameworkReact 18 + ViteFast component-driven SPA with hooks (useState, useMemo, useRef)Styling & UITailwind CSS + Lucide ReactResponsive 3-pane workspace, glassmorphic menus, and iconographyData VisualizationRechartsInteractive quiz accuracy trends and mastery progression chartsClient PDF & Speechpdfjs-dist + Web Speech APIBrowser-side PDF text extraction and conversational TTS audio playbackBackend APINode.js + Express.jsRESTful API routing, multer file validation, and RAG orchestrationDatabaseMongoDB + MongooseSchema modeling for users, documents, summaries, MCQs, quizzes, and chatsServer PDF Parserpdf-parsePage-wise text extraction and automatic chapter boundary detectionAI & RAG EngineGemini API / OpenAI SDK + BM25/Vector RetrievalStructured JSON summarization, MCQ generation, and grounded Q&ADeploymentVercel (Frontend) + Render (Backend) + MongoDB AtlasProduction cloud hosting architectureProject Directory Structuregraspr-ai-react-project/
 ├── index.html
 ├── package.json
 ├── vite.config.js
 ├── tailwind.config.js
 ├── postcss.config.js
 ├── src/
-│   ├── main.jsx
-│   ├── index.css
-│   ├── App.jsx
-│   ├── api/
-│   │   └── client.js
-│   └── components/
-│       └── README.md
+│   ├── main.jsx                  # React 18 root entry point
+│   ├── index.css                 # Tailwind directives & custom scroll/flip utilities
+│   ├── App.jsx                   # Complete 3-pane workspace, 6 views & state engine
+│   └── api/
+│       └── client.js             # Frontend REST API client wrapper
 └── backend/
     ├── package.json
     ├── .env.example
-    ├── server.js
+    ├── server.js                 # Express app & MongoDB connection entry point
     ├── models/
+    │   ├── User.js               # Student account & target exam profile
+    │   ├── Document.js           # PDF metadata, chapters[] & page-indexed chunks[]
+    │   ├── Summary.js            # Chapter overview, concepts, definitions & teacher tips
+    │   ├── Question.js           # 4-option MCQs with difficulty & pageReference
+    │   ├── QuizAttempt.js        # Score, percentage, answers[] & timestamps
+    │   └── Conversation.js       # Multi-turn RAG chat messages & citations[]
     ├── services/
+    │   ├── pdfService.js         # pdf-parse extraction, chapter splitter & RAG chunker
+    │   ├── ragService.js         # Keyword/BM25 chunk retrieval & scoring
+    │   └── aiService.js          # LLM prompt templates & JSON schema enforcement
     └── routes/
-```
-
-## Getting Started (Frontend React App)
-```bash
-npm install
+        ├── documentRoutes.js     # Upload, list, summarize, quiz generation & RAG chat
+        ├── quizRoutes.js         # Quiz attempt recording
+        └── historyRoutes.js      # Aggregated study history & dashboard KPIs
+REST API EndpointsMethodEndpointDescriptionPOST/api/documents/uploadUpload a .pdf file, validate size/format, extract text, and split chaptersGET/api/documentsList all uploaded study documents for the authenticated studentGET/api/documents/:idRetrieve full document details, chapters, and extracted textPOST/api/documents/:id/summarizeGenerate and save an AI summary for a specific chapterPOST/api/documents/:id/generate-quizGenerate difficulty-graded 4-option MCQs in structured JSONPOST/api/documents/:id/chatAsk a natural-language question using RAG and return page citationsGET/api/documents/:id/questionsRetrieve previously generated and saved MCQs for a documentPOST/api/quizzes/attemptsSave an interactive quiz attempt score and per-question breakdownGET/api/historyFetch aggregated dashboard statistics, quiz attempts, summaries, and chatsDatabase Schema Example (Documents Collection){
+  "_id": "doc-chem-1802",
+  "userId": "663000000000000000000001",
+  "title": "Polarity of a Covalent Bond — CHAM 1802",
+  "folder": "CHAM 1802",
+  "fileUrl": "/uploads/cham_1802_chemical_bonding.pdf",
+  "pageCount": 10,
+  "chapters": [
+    {
+      "chapterNumber": 1,
+      "title": "5.6.5 Polarity of a Covalent Bond & Dipole Moments",
+      "pageStart": 1,
+      "pageEnd": 4
+    }
+  ],
+  "createdAt": "2026-10-28T00:00:00.000Z"
+}
+Getting Started LocallyPrerequisitesNode.js v18+ and npmMongoDB (local instance or a free MongoDB Atlas cluster)LLM API Key (Google Gemini API key or OpenAI API key for backend AI routes)1. Clone the Repositorygit clone https://github.com/<your-username>/ai-pdf-study-assistant.git
+cd ai-pdf-study-assistant
+2. Run the React + Vite Frontendnpm install
 npm run dev
-```
-Then open `http://localhost:5173` in your browser.
-
-## Getting Started (Optional Express + MongoDB Backend)
+Open http://localhost:5173 in your browser. The frontend includes pre-loaded academic documents (CHAM 1802 Chemical Bonding, CS 301 Computer Networks OSI Model, and CS 405 RAG Foundations) so you can test every feature immediately.3. Run the Express + MongoDB Backendcd backend
+npm install
+cp .env.example .env
+Update .env with your configuration:PORT=5000
+MONGODB_URI=mongodb+srv://<username>:<password>@cluster0.mongodb.net/ai_pdf_study_assistant
+JWT_SECRET=your_jwt_secret_key
+GEMINI_API_KEY=your_gemini_api_key
+MAX_FILE_SIZE_MB=25
+Start the backend server:npm run dev
+5-Stage Development RoadmapStageMilestoneDeliverableStage 1PDF Upload & Text ExtractionDrag-and-drop React uploader, Express multer validation, pdf-parse extraction, and document viewerStage 2Chapter-Wise AI SummariesAutomatic heading detection, section splitting, key concept/definition extraction, and revision cardsStage 3MCQ Generator & Quiz SystemStructured JSON 4-option MCQ generation, difficulty filters, instant explanations, and score calculationStage 4RAG Chat with Uploaded NotesOverlapping chunk retrieval, grounded LLM synthesis, clickable [Page X] citations, and hallucination guardrailsStage 5Study History & Progress DashboardPersistent QuizAttempts, Recharts score trends, weak-topic diagnostic, and exam countdown plannerSecurity & Privacy PracticesStrict File Validation: Rejects non-PDF MIME types and enforces a configurable upload size ceiling (25 MB default).Grounded Context Windowing: Sends only relevant retrieved text chunks to the LLM API rather than exposing unrelated personal metadata.Storage Separation: Stores raw PDF binaries in dedicated local/cloud object storage (fileUrl) while keeping MongoDB documents lightweight and fast to query.LicenseDistributed under the MIT License. Built for students, educators, and lifelong learners.
 ```bash
 cd backend
 npm install
