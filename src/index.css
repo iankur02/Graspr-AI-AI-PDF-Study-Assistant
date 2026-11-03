@@ -1,0 +1,19 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+  background-color: #f3f6f8;
+  color: #1e293b;
+  overflow-x: hidden;
+}
+
+::selection {
+  background-color: #a7f3d0;
+  color: #064e3b;
+}
