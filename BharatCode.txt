@@ -1,0 +1,34 @@
+PROJECT: Grapsr AI Study Assistant
+
+HACKATHON: BharatCode Build League
+
+PROJECT OVERVIEW:
+Grapsr AI Study Assistant is an AI-powered learning platform designed to help students study more efficiently using their own educational materials.
+
+PROBLEM STATEMENT:
+Students often spend significant time reading lengthy PDFs, preparing revision notes, creating practice questions, and searching for specific information in study materials.
+
+SOLUTION:
+Grapsr AI Study Assistant provides an interactive platform that helps students understand and revise their study materials through AI-powered features.
+
+KEY FEATURES:
+- Upload and process PDF study materials.
+- Generate concise summaries of educational content.
+- Create practice questions and MCQs.
+- Interact with study materials through AI-powered conversations.
+- Organize learning materials and support self-paced study.
+
+TECHNOLOGY STACK:
+- Frontend: React, Vite, JavaScript
+- Backend: Node.js, Express
+- Database: MongoDB
+- AI Integration: [Specify the AI provider/API actually used]
+
+DEVELOPMENT:
+The project was developed with assistance from AI tools, including ChatGPT, for planning, coding assistance, debugging, and implementation support.
+
+SOURCE CODE:
+https://github.com/iankur02/Graspr-AI-AI-PDF-Study-Assistant.git
+
+NOTE:
+BharatCode API integration status: [Accurately specify whether it is integrated or not.]
