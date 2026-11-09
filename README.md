@@ -261,4 +261,7 @@ npm run dev
 
 ## License
 
-Distributed under the **MIT License**. Built for students, educators, and lifelong learners.
+This project is licensed under the MIT License.
+See the [LICENSE](LICENSE) file for details.
+
+Copyright (c) 2026 Ankur Sharma.
